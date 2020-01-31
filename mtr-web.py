@@ -29,7 +29,7 @@ sockets = Sockets(app)
 @sockets.route('/mtr')
 def mtr_socket(ws):
     request = json.loads(ws.receive())
-    print 'received', request
+    print ('received', request)
     args = ['mtr', '-p', '-c', '300']
     if request.get('no_dns'):
         args.append('--no-dns')
@@ -55,7 +55,7 @@ def mtr_socket(ws):
                 ws.send(json.dumps(data))
             except:
                 mtr.terminate()
-                print 'disconnected'
+                print ('disconnected')
 
 
 @app.route('/')
