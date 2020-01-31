@@ -7,10 +7,6 @@ and [angular-websocket](https://github.com/gdi2290/angular-websocket),
 allowing you to ping/traceroute a network from a remote HTTP server. This is a
 useful diagnostic tool while making changes to your own network configuration.
 
-## Example
-
-http://trace.hamwan.net/
-
 ## Installation
 
 ```sh
