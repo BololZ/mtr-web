@@ -29,7 +29,7 @@ sockets = Sockets(app)
 @sockets.route('/mtr')
 def mtr_socket(ws):
     request = json.loads(ws.receive())
-    print 'received', request
+    print ('received', request)
     args = ['mtr', '-p', '-c', '300']
     if request.get('no_dns'):
         args.append('--no-dns')
@@ -42,20 +42,24 @@ def mtr_socket(ws):
     elif request.get('version') == '6':
         args.append('-6')
     args.append(request.get('hostname'))
-    mtr = Popen(args, stdout=PIPE, stderr=STDOUT)
+    try:
+        mtr = subprocess.Popen(args, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, encoding = 'utf8')
+    except OSError as e:
+        print("Execution failed:", e)
     for line in mtr.stdout:
         try:
-            data = [x if i == 1 else int(x) for (i, x) in enumerate(line.split())]
+            data = [x if i == 1 else float(x) for (i, x) in enumerate(line.split())]
             data[2] = "%.2f%%" % (data[2] / 1000.)
         except ValueError:
             # probably an error from stderr
             data = line
         finally:
+            # print ('data : ', data)
             try:
                 ws.send(json.dumps(data))
             except:
                 mtr.terminate()
-                print 'disconnected'
+                print ('disconnected')
 
 
 @app.route('/')
