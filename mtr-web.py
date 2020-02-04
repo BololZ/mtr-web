@@ -43,7 +43,7 @@ def mtr_socket(ws):
         args.append('-6')
     args.append(request.get('hostname'))
     try:
-        mtr = subprocess.Popen(args, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, encoding = 'utf8')
+        mtr = Popen(args, stdout = PIPE, stderr = STDOUT, encoding = 'utf8')
     except OSError as e:
         print("Execution failed:", e)
     for line in mtr.stdout:
